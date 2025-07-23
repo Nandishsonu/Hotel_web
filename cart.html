@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Cart - Home Food</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .charges-section {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 16px;
+            margin: 16px 0;
+            border: 1px solid #e9ecef;
+        }
+        .charge-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+        .charge-row:last-child {
+            margin-bottom: 0;
+            border-top: 1px solid #dee2e6;
+            padding-top: 8px;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        .offers-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 12px;
+            padding: 16px;
+            margin: 16px 0;
+            color: white;
+        }
+        .offers-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .offer-item {
+            background: rgba(255,255,255,0.1);
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        .offer-item:hover {
+            background: rgba(255,255,255,0.2);
+            transform: translateY(-2px);
+        }
+        .offer-item.selected {
+            background: rgba(255,255,255,0.3);
+            border-color: #FFD700;
+        }
+        .offer-title {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        .offer-description {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        .offer-code {
+            background: rgba(255,255,255,0.2);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-top: 4px;
+            display: inline-block;
+        }
+        .discount-applied {
+            color: #28a745;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        .no-offers {
+            text-align: center;
+            opacity: 0.8;
+            font-style: italic;
+        }
+    </style>
+    <script>
+        let selectedOffer = null;
+        let appliedDiscount = 0;
+
+        function renderCart() {
+            const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+            const list = document.getElementById('cart-list');
+            const totalDiv = document.getElementById('cart-total');
+            list.innerHTML = '';
+            let subtotal = 0;
+            if (cart.length === 0) {
+                list.innerHTML = '<p style="text-align:center; color:#666; font-size:1.1rem;">Your cart is empty.</p>';
+                totalDiv.textContent = '';
+                document.getElementById('confirm-btn').style.display = 'none';
+                document.getElementById('clear-cart-btn').style.display = 'none';
+                document.getElementById('charges-section').style.display = 'none';
+                document.getElementById('offers-section').style.display = 'none';
+                return;
+            }
+            cart.forEach((item, idx) => {
+                subtotal += item.price * item.qty;
+                const div = document.createElement('div');
+                div.className = 'food-item';
+                div.innerHTML = `
+                    <img src="${item.img || 'https://via.placeholder.com/80'}" alt="${item.name}" class="food-img" onerror="this.src='https://via.placeholder.com/80'">
+                    <div class="food-details">
+                        <h3>${item.name}</h3>
+                        <span class="food-price">₹${item.price}</span>
+                        <div class="qty-row">
+                            <button class="qty-btn" onclick="updateQty(${idx}, -1)">-</button>
+                            <span class="qty-num">${item.qty}</span>
+                            <button class="qty-btn" onclick="updateQty(${idx}, 1)">+</button>
+                        </div>
+                    </div>
+                `;
+                list.appendChild(div);
+            });
+            
+            // Calculate charges
+            const deliveryCharge = subtotal > 500 ? 0 : 40;
+            const gst = subtotal * 0.05; // 5% GST
+            const handlingCharge = subtotal * 0.02; // 2% handling charge
+            const discount = appliedDiscount;
+            const total = subtotal + deliveryCharge + gst + handlingCharge - discount;
+            
+            // Update charges display
+            document.getElementById('subtotal').textContent = `₹${subtotal.toFixed(2)}`;
+            document.getElementById('delivery-charge').textContent = deliveryCharge === 0 ? 'FREE' : `₹${deliveryCharge}`;
+            document.getElementById('gst').textContent = `₹${gst.toFixed(2)}`;
+            document.getElementById('handling-charge').textContent = `₹${handlingCharge.toFixed(2)}`;
+            document.getElementById('discount').textContent = discount > 0 ? `-₹${discount.toFixed(2)}` : '₹0.00';
+            document.getElementById('total-amount').textContent = `₹${total.toFixed(2)}`;
+            
+            // Show/hide sections
+            document.getElementById('charges-section').style.display = 'block';
+            document.getElementById('offers-section').style.display = 'block';
+            document.getElementById('confirm-btn').style.display = 'block';
+            document.getElementById('clear-cart-btn').style.display = 'block';
+        }
+        
+        function updateQty(idx, delta) {
+            let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+            if (!cart[idx]) return;
+            cart[idx].qty += delta;
+            if (cart[idx].qty <= 0) {
+                cart.splice(idx, 1);
+            }
+            localStorage.setItem('cart', JSON.stringify(cart));
+            renderCart();
+        }
+        
+        function clearCart() {
+            if (confirm('Are you sure you want to clear your cart?')) {
+                localStorage.setItem('cart', '[]');
+                selectedOffer = null;
+                appliedDiscount = 0;
+                renderCart();
+            }
+        }
+        
+        function selectOffer(offerId) {
+            const offers = document.querySelectorAll('.offer-item');
+            offers.forEach(offer => offer.classList.remove('selected'));
+            
+            if (selectedOffer === offerId) {
+                selectedOffer = null;
+                appliedDiscount = 0;
+            } else {
+                selectedOffer = offerId;
+                document.getElementById(offerId).classList.add('selected');
+                
+                // Apply discount based on offer
+                const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+                const subtotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+                
+                switch(offerId) {
+                    case 'offer1':
+                        appliedDiscount = Math.min(50, subtotal * 0.1); // 10% off, max ₹50
+                        break;
+                    case 'offer2':
+                        appliedDiscount = 30; // Flat ₹30 off
+                        break;
+                    case 'offer3':
+                        appliedDiscount = subtotal * 0.15; // 15% off
+                        break;
+                    case 'offer4':
+                        appliedDiscount = Math.min(100, subtotal * 0.2); // 20% off, max ₹100
+                        break;
+                }
+            }
+            
+            renderCart();
+        }
+        
+        function confirmOrder() {
+            const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+            if (cart.length === 0) {
+                alert('Your cart is empty!');
+                return;
+            }
+            
+            // Store order details including charges and offers
+            const orderDetails = {
+                cart: cart,
+                selectedOffer: selectedOffer,
+                appliedDiscount: appliedDiscount,
+                timestamp: new Date().toISOString()
+            };
+            localStorage.setItem('currentOrder', JSON.stringify(orderDetails));
+            
+            window.location.href = 'payment.html';
+        }
+        
+        window.onload = renderCart;
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h2 class="form-title cart-title-gradient" style="text-align:center; margin-bottom: 18px;">Your Cart</h2>
+        <button class="main-btn" onclick="window.location.href='hotelmain.html'" style="margin-bottom:18px;">&larr; Back to Menu</button>
+        <div id="cart-list" class="food-list"></div>
+        
+        <div id="charges-section" class="charges-section" style="display:none;">
+            <div class="charge-row">
+                <span>Subtotal:</span>
+                <span id="subtotal">₹0.00</span>
+            </div>
+            <div class="charge-row">
+                <span>Delivery Charge:</span>
+                <span id="delivery-charge">FREE</span>
+            </div>
+            <div class="charge-row">
+                <span>GST (5%):</span>
+                <span id="gst">₹0.00</span>
+            </div>
+            <div class="charge-row">
+                <span>Handling Charge (2%):</span>
+                <span id="handling-charge">₹0.00</span>
+            </div>
+            <div class="charge-row">
+                <span>Discount:</span>
+                <span id="discount">₹0.00</span>
+            </div>
+            <div class="charge-row">
+                <span>Total Amount:</span>
+                <span id="total-amount">₹0.00</span>
+            </div>
+        </div>
+        
+        <div id="offers-section" class="offers-section" style="display:none;">
+            <div class="offers-title">
+                🎉 Available Offers
+            </div>
+            <div class="offer-item" id="offer1" onclick="selectOffer('offer1')">
+                <div class="offer-title">🎯 First Order Special</div>
+                <div class="offer-description">Get 10% off on your first order (max ₹50)</div>
+                <div class="offer-code">Use code: FIRST10</div>
+            </div>
+            <div class="offer-item" id="offer2" onclick="selectOffer('offer2')">
+                <div class="offer-title">💰 Flat ₹30 Off</div>
+                <div class="offer-description">Flat ₹30 discount on orders above ₹200</div>
+                <div class="offer-code">Use code: FLAT30</div>
+            </div>
+            <div class="offer-item" id="offer3" onclick="selectOffer('offer3')">
+                <div class="offer-title">💳 15% Cashback</div>
+                <div class="offer-description">Get 15% cashback on your next order</div>
+                <div class="offer-code">Use code: CASH15</div>
+            </div>
+            <div class="offer-item" id="offer4" onclick="selectOffer('offer4')">
+                <div class="offer-title">🔥 Mega Discount</div>
+                <div class="offer-description">20% off on orders above ₹300 (max ₹100)</div>
+                <div class="offer-code">Use code: MEGA20</div>
+            </div>
+        </div>
+        
+        <div style="display:flex; gap:10px; justify-content:center;">
+            <button id="clear-cart-btn" class="main-btn" style="display:none; background-color:#ff6b6b;" onclick="clearCart()">Clear Cart</button>
+            <button id="confirm-btn" class="main-btn confirm-btn" style="display:none;" onclick="confirmOrder()">Confirm Order</button>
+        </div>
+    </div>
+</body>
+</html> 

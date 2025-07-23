@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment - Home Food</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .total-amount {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 24px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+        }
+        .total-amount h2 {
+            margin: 0;
+            font-size: 2.5rem;
+            font-weight: 700;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        .total-amount p {
+            margin: 8px 0 0 0;
+            opacity: 0.9;
+            font-size: 1rem;
+        }
+        .payment-options {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            margin: 32px 0 24px 0;
+        }
+        .payment-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            padding: 18px 20px;
+            width: 100%;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            position: relative;
+            overflow: hidden;
+        }
+        .payment-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+        .payment-btn:hover::before {
+            left: 100%;
+        }
+        .payment-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+        .payment-btn:active {
+            transform: translateY(0);
+        }
+        .payment-btn.gpay {
+            background: linear-gradient(135deg, #4285f4 0%, #34a853 100%);
+            box-shadow: 0 4px 15px rgba(66, 133, 244, 0.3);
+        }
+        .payment-btn.gpay:hover {
+            box-shadow: 0 6px 20px rgba(66, 133, 244, 0.4);
+        }
+        .payment-btn.phonepe {
+            background: linear-gradient(135deg, #5f259f 0%, #8e44ad 100%);
+            box-shadow: 0 4px 15px rgba(95, 37, 159, 0.3);
+        }
+        .payment-btn.phonepe:hover {
+            box-shadow: 0 6px 20px rgba(95, 37, 159, 0.4);
+        }
+        .payment-btn.bhim {
+            background: linear-gradient(135deg, #00b894 0%, #00cec9 100%);
+            box-shadow: 0 4px 15px rgba(0, 184, 148, 0.3);
+        }
+        .payment-btn.bhim:hover {
+            box-shadow: 0 6px 20px rgba(0, 184, 148, 0.4);
+        }
+        .payment-btn.debit {
+            background: linear-gradient(135deg, #e17055 0%, #d63031 100%);
+            box-shadow: 0 4px 15px rgba(225, 112, 85, 0.3);
+        }
+        .payment-btn.debit:hover {
+            box-shadow: 0 6px 20px rgba(225, 112, 85, 0.4);
+        }
+        .payment-btn.more {
+            background: linear-gradient(135deg, #fdcb6e 0%, #e17055 100%);
+            box-shadow: 0 4px 15px rgba(253, 203, 110, 0.3);
+        }
+        .payment-btn.more:hover {
+            box-shadow: 0 6px 20px rgba(253, 203, 110, 0.4);
+        }
+        .page-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 24px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+        .page-header h2 {
+            margin: 0;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+        .page-header p {
+            margin: 8px 0 0 0;
+            opacity: 0.9;
+            font-size: 0.95rem;
+        }
+        .payment-icon {
+            font-size: 1.3rem;
+        }
+        .back-btn {
+            background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 20px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(116, 185, 255, 0.3);
+            transition: all 0.3s ease;
+            margin-bottom: 18px;
+        }
+        .back-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(116, 185, 255, 0.4);
+        }
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background-image: url('https://miro.medium.com/v2/resize:fit:1358/1*jHLz9MczsYg8wI9WTlpCIA.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px 0;
+            position: relative;
+        }
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.8) 0%, rgba(118, 75, 162, 0.8) 100%);
+            z-index: -1;
+        }
+        .container {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            padding: 24px;
+            max-width: 500px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <button class="back-btn" onclick="window.location.href='cart.html'">&larr; Back to Cart</button>
+        
+        <div class="total-amount">
+            <h2 id="payment-total">₹0.00</h2>
+            <p>Total Amount to Pay</p>
+        </div>
+        
+        <div class="page-header">
+            <h2>Choose Payment Method</h2>
+            <p>Select your preferred payment option to complete your order</p>
+        </div>
+        <div class="payment-options">
+            <button class="payment-btn gpay">
+                <span class="payment-icon">📱</span>
+                <span>Google Pay</span>
+            </button>
+            <button class="payment-btn phonepe">
+                <span class="payment-icon">💜</span>
+                <span>PhonePe</span>
+            </button>
+            <button class="payment-btn bhim">
+                <span class="payment-icon">🏦</span>
+                <span>BHIM UPI</span>
+            </button>
+            <button class="payment-btn debit">
+                <span class="payment-icon">💳</span>
+                <span>Debit Card</span>
+            </button>
+            <button class="payment-btn more">
+                <span class="payment-icon">➕</span>
+                <span>Add More Payment Methods</span>
+            </button>
+        </div>
+    </div>
+    
+    <script>
+        function loadPaymentTotal() {
+            // Get order details from localStorage
+            const orderDetails = JSON.parse(localStorage.getItem('currentOrder') || '{}');
+            
+            if (orderDetails.cart && orderDetails.cart.length > 0) {
+                // Calculate total from cart items
+                let subtotal = 0;
+                orderDetails.cart.forEach(item => {
+                    subtotal += item.price * item.qty;
+                });
+                
+                // Calculate charges (same logic as cart.html)
+                const deliveryCharge = subtotal > 500 ? 0 : 40;
+                const gst = subtotal * 0.05; // 5% GST
+                const handlingCharge = subtotal * 0.02; // 2% handling charge
+                const discount = orderDetails.appliedDiscount || 0;
+                const total = subtotal + deliveryCharge + gst + handlingCharge - discount;
+                
+                // Display the total amount
+                document.getElementById('payment-total').textContent = `₹${total.toFixed(2)}`;
+            } else {
+                // Fallback: try to get total from cart directly
+                const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+                if (cart.length > 0) {
+                    let subtotal = 0;
+                    cart.forEach(item => {
+                        subtotal += item.price * item.qty;
+                    });
+                    
+                    const deliveryCharge = subtotal > 500 ? 0 : 40;
+                    const gst = subtotal * 0.05;
+                    const handlingCharge = subtotal * 0.02;
+                    const total = subtotal + deliveryCharge + gst + handlingCharge;
+                    
+                    document.getElementById('payment-total').textContent = `₹${total.toFixed(2)}`;
+                } else {
+                    document.getElementById('payment-total').textContent = '₹0.00';
+                }
+            }
+        }
+        
+        // Load total amount when page loads
+        window.onload = loadPaymentTotal;
+    </script>
+</body>
+</html> 

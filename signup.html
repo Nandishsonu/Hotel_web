@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - Home Food</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: url('https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80') center/cover no-repeat;
+            position: relative;
+        }
+        .overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.65);
+            z-index: 0;
+        }
+        .signup-mobile-card {
+            position: relative;
+            z-index: 1;
+            background: rgba(30,30,30,0.92);
+            border-radius: 24px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.28);
+            padding: 36px 22px 24px 22px;
+            max-width: 350px;
+            width: 100%;
+            text-align: center;
+            color: #fff;
+        }
+        .signup-logo {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: -48px auto 18px auto;
+            box-shadow: 0 4px 18px rgba(255, 152, 0, 0.13);
+        }
+        .signup-logo img {
+            width: 40px;
+            height: 40px;
+        }
+        .signup-title {
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+        }
+        .social-btns {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        .google-btn, .facebook-btn {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1rem;
+            border-radius: 6px;
+            border: none;
+            padding: 10px 0;
+            cursor: pointer;
+        }
+        .google-btn {
+            background: #db4437;
+            color: #fff;
+        }
+        .facebook-btn {
+            background: #4267B2;
+            color: #fff;
+        }
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 18px 0 16px 0;
+        }
+        .divider-line {
+            flex: 1;
+            height: 1px;
+            background: #fff2;
+        }
+        .divider-text {
+            margin: 0 10px;
+            color: #fff8;
+            font-size: 0.95rem;
+        }
+        .signup-label {
+            display: block;
+            text-align: left;
+            margin-bottom: 4px;
+            font-weight: 600;
+            color: #fff;
+            font-size: 0.98rem;
+        }
+        .signup-input {
+            width: 100%;
+            padding: 12px 14px;
+            border-radius: 8px;
+            border: 1.5px solid #fff3;
+            font-size: 1rem;
+            margin-bottom: 16px;
+            outline: none;
+            background: #222;
+            color: #fff;
+            transition: border 0.2s;
+        }
+        .signup-input:focus {
+            border: 2px solid #ff9800;
+        }
+        .input-row {
+            position: relative;
+        }
+        .eye-icon {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #fff8;
+            cursor: pointer;
+            font-size: 1.1rem;
+        }
+        .terms {
+            color: #fff8;
+            font-size: 0.93rem;
+            text-align: left;
+            margin-bottom: 12px;
+        }
+        .terms a {
+            color: #FFD700;
+            text-decoration: underline;
+            font-weight: 600;
+        }
+        .signup-btn {
+            width: 100%;
+            font-size: 1.08rem;
+            font-weight: 700;
+            padding: 13px 0;
+            border-radius: 10px;
+            background: #e53935;
+            color: #fff;
+            border: none;
+            box-shadow: 0 2px 8px rgba(229, 57, 53, 0.13);
+            transition: background 0.2s, box-shadow 0.2s;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            margin-top: 8px;
+        }
+        .signup-btn:hover {
+            background: #b71c1c;
+        }
+        .login-link {
+            margin-top: 18px;
+            color: #fff8;
+            font-size: 0.98rem;
+        }
+        .login-link a {
+            color: #FFD700;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        @media (max-width: 500px) {
+            .signup-mobile-card {
+                padding: 12px 2vw 18px 2vw;
+                max-width: 99vw;
+            }
+            .signup-title {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="overlay"></div>
+    <div class="signup-mobile-card">
+        <div class="signup-logo">
+            <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="User Icon">
+        </div>
+        <div class="signup-title">SIGN UP</div>
+        <div style="font-size:0.98rem; color:#fff8; margin-bottom:18px;">with your social network</div>
+        <div class="social-btns">
+            <!-- Google Sign-In -->
+            <div id="g_id_onload"
+                 data-client_id="YOUR_GOOGLE_CLIENT_ID"
+                 data-context="signin"
+                 data-ux_mode="popup"
+                 data-callback="handleGoogleSignIn"
+                 data-auto_prompt="false">
+            </div>
+            <div class="g_id_signin"
+                 data-type="standard"
+                 data-shape="rectangular"
+                 data-theme="filled_black"
+                 data-text="signin_with"
+                 data-size="large"
+                 data-logo_alignment="left">
+            </div>
+            <!-- Facebook Sign-In -->
+            <button class="facebook-btn" type="button" onclick="facebookLogin()">
+              <span style="font-size:1.2em; margin-right:8px;">&#xf09a;</span> Facebook
+            </button>
+        </div>
+        <div class="divider">
+            <div class="divider-line"></div>
+            <div class="divider-text">or</div>
+            <div class="divider-line"></div>
+        </div>
+        <form class="auth-form" onsubmit="handleSignUp(event);">
+            <label class="signup-label" for="fullname">FULL NAME</label>
+            <input class="signup-input" id="fullname" type="text" placeholder="Enter your full name" required>
+            <label class="signup-label" for="email">EMAIL ID</label>
+            <input class="signup-input" id="email" type="email" placeholder="Enter your email address" required>
+            <label class="signup-label" for="address">ADDRESS</label>
+            <input class="signup-input" id="address" type="text" placeholder="Enter your delivery address" required>
+            <div class="input-row">
+                <label class="signup-label" for="password">PASSWORD</label>
+                <input class="signup-input" id="password" type="password" placeholder="Create a password" required>
+                <span class="eye-icon" onclick="togglePassword()">&#128065;</span>
+            </div>
+            <div class="terms">
+                <input type="checkbox" required style="accent-color:#FFD700; margin-right:6px;"> By clicking Sign Up, you agree to <a href="#">Terms of Use</a> Data Security and Cookies.
+            </div>
+            <button class="signup-btn" type="submit">Create Account</button>
+        </form>
+        <div class="login-link">If You Are An Existing User? <a href="signin.html">Login Here</a></div>
+    </div>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>
+    <script>
+        function togglePassword() {
+            const pwd = document.getElementById('password');
+            if (pwd.type === 'password') {
+                pwd.type = 'text';
+            } else {
+                pwd.type = 'password';
+            }
+        }
+
+        window.fbAsyncInit = function() {
+          FB.init({
+            appId      : 'YOUR_FACEBOOK_APP_ID',
+            cookie     : true,
+            xfbml      : true,
+            version    : 'v19.0'
+          });
+        };
+
+        function facebookLogin() {
+          FB.login(function(response) {
+            if (response.authResponse) {
+              // User logged in, you can get user info here
+              FB.api('/me', {fields: 'name,email'}, function(userInfo) {
+                alert('Facebook sign up successful! Name: ' + userInfo.name + ', Email: ' + userInfo.email);
+                // Redirect or handle user info as needed
+              });
+            } else {
+              alert('Facebook sign up cancelled or failed.');
+            }
+          }, {scope: 'email'});
+        }
+
+        function handleSignUp(event) {
+            event.preventDefault();
+            
+            const fullname = document.getElementById('fullname').value;
+            const email = document.getElementById('email').value;
+            const address = document.getElementById('address').value;
+            const password = document.getElementById('password').value;
+            
+            // Check if user already exists
+            const registeredUsers = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
+            const userExists = registeredUsers.find(user => user.email === email);
+            
+            if (userExists) {
+                alert('User with this email already exists! Please sign in instead.');
+                return;
+            }
+            
+            // Add new user to registered users
+            const newUser = {
+                name: fullname,
+                email: email,
+                address: address,
+                password: password
+            };
+            
+            registeredUsers.push(newUser);
+            localStorage.setItem('registeredUsers', JSON.stringify(registeredUsers));
+            
+            // Store current user info
+            localStorage.setItem('userInfo', JSON.stringify({
+                name: fullname,
+                email: email,
+                address: address,
+                isGoogleUser: false
+            }));
+            
+            alert('Account created successfully! Welcome to Home Food!');
+            window.location.href = 'hotelmain.html';
+        }
+
+        function handleGoogleSignIn(response) {
+            // Extract user information from Google response
+            const credential = response.credential;
+            const payload = JSON.parse(atob(credential.split('.')[1]));
+            
+            // Check if user already exists
+            const registeredUsers = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
+            const userExists = registeredUsers.find(user => user.email === payload.email);
+            
+            if (userExists) {
+                // User already registered, proceed to sign in
+                localStorage.setItem('userInfo', JSON.stringify({
+                    name: userExists.name,
+                    email: userExists.email,
+                    address: userExists.address,
+                    picture: payload.picture,
+                    isGoogleUser: true
+                }));
+                window.location.href = 'hotelmain.html';
+            } else {
+                // New Google user, prompt for address
+                const address = prompt('Please enter your delivery address:');
+                if (address) {
+                    const newUser = {
+                        name: payload.name,
+                        email: payload.email,
+                        address: address,
+                        password: 'google_user_' + Date.now() // Unique identifier for Google users
+                    };
+                    
+                    registeredUsers.push(newUser);
+                    localStorage.setItem('registeredUsers', JSON.stringify(registeredUsers));
+                    
+                    localStorage.setItem('userInfo', JSON.stringify({
+                        name: payload.name,
+                        email: payload.email,
+                        address: address,
+                        picture: payload.picture,
+                        isGoogleUser: true
+                    }));
+                    
+                    alert('Account created successfully! Welcome to Home Food!');
+                    window.location.href = 'hotelmain.html';
+                } else {
+                    alert('Address is required to create your account.');
+                }
+            }
+        }
+    </script>
+</body>
+</html> 

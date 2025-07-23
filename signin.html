@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In - Home Food</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <style>
+        body {
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: url('https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80') center/cover no-repeat;
+            position: relative;
+        }
+        .overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.65);
+            z-index: 0;
+        }
+        .signin-mobile-card {
+            position: relative;
+            z-index: 1;
+            background: rgba(30,30,30,0.92);
+            border-radius: 24px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.28);
+            padding: 36px 22px 24px 22px;
+            max-width: 350px;
+            width: 100%;
+            text-align: center;
+            color: #fff;
+        }
+        .signin-logo {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: -48px auto 18px auto;
+            box-shadow: 0 4px 18px rgba(255, 152, 0, 0.13);
+        }
+        .signin-logo img {
+            width: 40px;
+            height: 40px;
+        }
+        .signin-title {
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+        }
+        .social-btns {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 16px;
+            align-items: center;
+        }
+        .google-btn, .facebook-btn {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1rem;
+            border-radius: 6px;
+            border: none;
+            padding: 10px 0;
+            cursor: pointer;
+            width: 100%;
+        }
+        .google-btn {
+            background: #db4437;
+            color: #fff;
+        }
+        .facebook-btn {
+            background: #4267B2;
+            color: #fff;
+        }
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 18px 0 16px 0;
+        }
+        .divider-line {
+            flex: 1;
+            height: 1px;
+            background: #fff2;
+        }
+        .divider-text {
+            margin: 0 10px;
+            color: #fff8;
+            font-size: 0.95rem;
+        }
+        .signin-label {
+            display: block;
+            text-align: left;
+            margin-bottom: 4px;
+            font-weight: 600;
+            color: #fff;
+            font-size: 0.98rem;
+        }
+        .signin-input {
+            width: 100%;
+            padding: 12px 14px;
+            border-radius: 8px;
+            border: 1.5px solid #fff3;
+            font-size: 1rem;
+            margin-bottom: 16px;
+            outline: none;
+            background: #222;
+            color: #fff;
+            transition: border 0.2s;
+        }
+        .signin-input:focus {
+            border: 2px solid #ff9800;
+        }
+        .input-row {
+            position: relative;
+        }
+        .eye-icon {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #fff8;
+            cursor: pointer;
+            font-size: 1.1rem;
+        }
+        .signin-options {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+            font-size: 0.95rem;
+        }
+        .signin-options label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: #fff8;
+            font-weight: 400;
+        }
+        .signin-options a {
+            color: #ff9800;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .signin-btn {
+            width: 100%;
+            font-size: 1.08rem;
+            font-weight: 700;
+            padding: 13px 0;
+            border-radius: 10px;
+            background: #e53935;
+            color: #fff;
+            border: none;
+            box-shadow: 0 2px 8px rgba(229, 57, 53, 0.13);
+            transition: background 0.2s, box-shadow 0.2s;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            margin-top: 8px;
+        }
+        .signin-btn:hover {
+            background: #b71c1c;
+        }
+        .signup-link {
+            margin-top: 18px;
+            color: #fff8;
+            font-size: 0.98rem;
+        }
+        .signup-link a {
+            color: #FFD700;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        @media (max-width: 500px) {
+            .signin-mobile-card {
+                padding: 12px 2vw 18px 2vw;
+                max-width: 99vw;
+            }
+            .signin-title {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="overlay"></div>
+    <div class="signin-mobile-card">
+        <div class="signin-logo">
+            <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="User Icon">
+        </div>
+        <div class="signin-title">SIGN IN</div>
+        <div style="font-size:0.98rem; color:#fff8; margin-bottom:18px;">with your social network</div>
+        <div class="social-btns">
+            <!-- Google Sign-In -->
+            <div id="g_id_onload"
+                 data-client_id="YOUR_GOOGLE_CLIENT_ID"
+                 data-context="signin"
+                 data-ux_mode="popup"
+                 data-callback="handleGoogleSignIn"
+                 data-auto_prompt="false">
+            </div>
+            <div class="g_id_signin"
+                 data-type="standard"
+                 data-shape="rectangular"
+                 data-theme="filled_black"
+                 data-text="signin_with"
+                 data-size="large"
+                 data-logo_alignment="left">
+            </div>
+            <button class="facebook-btn"><span style="font-size:1.2em; margin-right:8px;">&#xf09a;</span> Facebook</button>
+        </div>
+        <div class="divider">
+            <div class="divider-line"></div>
+            <div class="divider-text">or</div>
+            <div class="divider-line"></div>
+        </div>
+        <form class="auth-form" onsubmit="handleEmailSignIn(event);">
+            <label class="signin-label" for="email">EMAIL ID</label>
+            <input class="signin-input" id="email" type="email" placeholder="Enter your email address" required>
+            <div class="input-row">
+                <label class="signin-label" for="password">PASSWORD</label>
+                <input class="signin-input" id="password" type="password" placeholder="Enter your password" required>
+                <span class="eye-icon" onclick="togglePassword()">&#128065;</span>
+            </div>
+            <div class="signin-options">
+                <label><input type="checkbox" style="accent-color:#FFD700;"> Remember me</label>
+                <a href="#">Forgot your password?</a>
+            </div>
+            <button class="signin-btn" type="submit">Login</button>
+        </form>
+        <div class="signup-link">Not a user? <a href="signup.html">Sign up now</a></div>
+    </div>
+    <script>
+        function togglePassword() {
+            const pwd = document.getElementById('password');
+            if (pwd.type === 'password') {
+                pwd.type = 'text';
+            } else {
+                pwd.type = 'password';
+            }
+        }
+
+        function handleGoogleSignIn(response) {
+            // Handle the Google Sign-In response
+            console.log('Google Sign-In successful:', response);
+            
+            // Extract user information
+            const credential = response.credential;
+            const payload = JSON.parse(atob(credential.split('.')[1]));
+            
+            console.log('User email:', payload.email);
+            console.log('User name:', payload.name);
+            console.log('User picture:', payload.picture);
+            
+            // Check if user is registered
+            const registeredUsers = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
+            const userExists = registeredUsers.find(user => user.email === payload.email);
+            
+            if (userExists) {
+                // User is registered, proceed with sign-in
+                localStorage.setItem('userInfo', JSON.stringify({
+                    email: payload.email,
+                    name: payload.name,
+                    address: userExists.address,
+                    picture: payload.picture,
+                    isGoogleUser: true
+                }));
+                
+                // Redirect to main page
+                window.location.href = 'hotelmain.html';
+            } else {
+                // User is not registered
+                alert('You are not registered! Please sign up first.');
+                // Clear any stored data
+                localStorage.removeItem('userInfo');
+            }
+        }
+
+        function handleEmailSignIn(event) {
+            event.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            // Check if user is registered
+            const registeredUsers = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
+            const userExists = registeredUsers.find(user => user.email === email);
+            
+            if (userExists) {
+                // Check password (in a real app, you'd hash and compare passwords)
+                if (userExists.password === password) {
+                    // Password matches, proceed with sign-in
+                    localStorage.setItem('userInfo', JSON.stringify({
+                        email: userExists.email,
+                        name: userExists.name,
+                        address: userExists.address,
+                        isGoogleUser: false
+                    }));
+                    
+                    // Redirect to main page
+                    window.location.href = 'hotelmain.html';
+                } else {
+                    alert('Incorrect password! Please try again.');
+                }
+            } else {
+                // User is not registered
+                alert('You are not registered! Please sign up first.');
+            }
+        }
+
+        // Check if user is already signed in
+        window.onload = function() {
+            const userInfo = localStorage.getItem('userInfo');
+            if (userInfo) {
+                // User is already signed in, redirect to main page
+                window.location.href = 'hotelmain.html';
+            }
+        };
+    </script>
+</body>
+</html> 

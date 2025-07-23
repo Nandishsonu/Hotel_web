@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - Home Food</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .profile-container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 32px 0 0 0;
+            text-align: left;
+        }
+        .profile-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .profile-emoji {
+            font-size: 2.5rem;
+            margin-right: 12px;
+        }
+        .profile-section {
+            margin: 28px 0 18px 0;
+        }
+        .profile-label {
+            color: #e65100;
+            font-weight: 600;
+            margin-bottom: 2px;
+            display: block;
+        }
+        .profile-value {
+            margin-bottom: 10px;
+            font-size: 1.05rem;
+        }
+        .logout-btn {
+            background: #e65100;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 14px 0;
+            width: 100%;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 40px;
+            box-shadow: 0 2px 8px rgba(255, 152, 0, 0.15);
+            transition: background 0.2s;
+        }
+        .logout-btn:hover {
+            background: #b71c1c;
+        }
+    </style>
+</head>
+<body>
+    <div class="container profile-container">
+        <div class="profile-header">
+            <span class="profile-emoji">👤</span>
+            <button class="icon-btn" title="Help" onclick="window.location.href='help.html'">
+                <span style="font-size:1.3rem;">❓</span>
+            </button>
+        </div>
+        <h2 class="form-title">Your Profile</h2>
+        <div class="profile-section">
+            <span class="profile-label">Name</span>
+            <div class="profile-value">John Doe</div>
+            <span class="profile-label">Email</span>
+            <div class="profile-value">john.doe@example.com</div>
+            <span class="profile-label">Address</span>
+            <div class="profile-value">123 Main Street, City</div>
+        </div>
+        <div class="profile-section">
+            <span class="profile-label">Account</span>
+            <div class="profile-value">Premium Member</div>
+        </div>
+        <button class="logout-btn" onclick="logout()">Logout</button>
+    </div>
+    <script>
+        function logout() {
+            window.close();
+        }
+    </script>
+</body>
+</html> 
